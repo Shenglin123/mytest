@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.ssm.dao.Ipermission">
+    <select id="findByid" resultType="permission">
+      select * from permission where id in (select permissionid from role_permission where roleid = #{id})
+    </select>
+    <select id="findAll" resultType="permission">
+        select * from permission order by systime desc
+    </select>
+    <update id="addPandR" parameterType="roleandpermission">
+        insert into role_permission VALUES (#{pid},#{rid})
+    </update>
+    <delete id="deletePandR" parameterType="String">
+        delete from role_permission where roleid = #{id}
+    </delete>
+    <delete id="deleteRandP" parameterType="String">
+        delete from role_permission where permissionid = #{id}
+    </delete>
+    <select id="findById" parameterType="String" resultType="permission">
+        select * from permission where id = #{id}
+    </select>
+    <delete id="delete" parameterType="String">
+        delete from permission where id = #{id}
+    </delete>
+    <update id="save" parameterType="permission">
+        insert into permission  (permissionname,url) VALUES (#{permissionName},#{url})
+    </update>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.ssm.dao.ISysLogDao">
+    <select id="findAll" resultType="Syslog">
+        select * from sysLog order by systime desc
+    </select>
+    <update id="save" parameterType="syslog">
+       insert into sysLog (visitTime,username,ip,url,executionTime,method) values (#{visitTime},#{username},#{ip},#{url},#{executionTime},#{method})
+    </update>
+    <delete id="delete" parameterType="String">
+        delete from syslog where id = #{id}
+    </delete>
+</mapper>

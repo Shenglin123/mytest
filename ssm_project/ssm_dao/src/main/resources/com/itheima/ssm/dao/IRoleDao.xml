@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.ssm.dao.IRoleDao">
+    <resultMap id="role" type="role">
+        <id column="id" property="id" />
+        <collection property="permissions" column="id" ofType="permission"  select="com.itheima.ssm.dao.Ipermission.findByid" fetchType="lazy"/>
+    </resultMap>
+    <select id="findRoleByUserId" resultMap="role" parameterType="String">
+        select * from role where id in (select roleId from users_role where userId=#{userId})
+    </select>
+    <select id="findAll" resultType="role">
+        select * from role order by systime desc
+    </select>
+    <insert id="save" parameterType="role">
+        insert into role (rolename,roledesc) VALUES (#{roleName},#{roleDesc})
+    </insert>
+    <delete id="delete" parameterType="String">
+        delete from role where id = #{id}
+    </delete>
+    <delete id="deletep" parameterType="String">
+        delete from ROLE_PERMISSION where roleid = #{id}
+    </delete>
+    <delete id="deleterole" parameterType="String">
+        delete from USERS_ROLE where roleid=#{id}
+    </delete>
+    <resultMap id="rolep" type="role">
+        <id column="id" property="id" />
+        <collection property="permissions" column="id" ofType="permission"  select="com.itheima.ssm.dao.Ipermission.findByid" fetchType="lazy"/>
+    </resultMap>
+    <select id="findByid" parameterType="String" resultMap="rolep">
+        select * from role where id = #{id}
+    </select>
+    <update id="addUserRole" parameterType="roleanduser">
+        insert into USERS_ROLE VALUES (#{uid},#{rid})
+    </update>
+    <delete id="deleteAll" parameterType="String">
+        delete  from  USERS_ROLE where userid = #{id}
+    </delete>
+</mapper>
